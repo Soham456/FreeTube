@@ -41,3 +41,17 @@
   opacity: 0;
   transition: visibility 0s linear 300ms, opacity 300ms;
 }
+
+.action-button {
+  background-color: #2196f3; /* Blue background */
+  padding-block: 5px 10px; /* Padding for the button */
+  margin-inline-start: 10px; /* Space between message and button */
+  border-radius: 10px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth background color transition */
+  pointer-events: auto; /* Ensure it can be interacted with */
+}
+
+.action-button:hover {
+  background-color: #1976d2; /* Darker blue on hover */
+}

@@ -29,13 +29,14 @@ export default defineComponent({
 
       toast.isOpen = false
     },
-    open: function ({ detail: { message, time, action } }) {
+    open: function ({ detail: { message, time, action , btnName } }) {
       const toast = {
         message: message,
         action: action || (() => { }),
         isOpen: false,
         timeout: null,
-        id: id++
+        id: id++,
+        btnName:btnName
       }
       toast.timeout = setTimeout(this.close, time || 3000, toast)
       nextTick(() => { toast.isOpen = true })

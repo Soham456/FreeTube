@@ -536,16 +536,39 @@ export default defineComponent({
       }
     },
 
-    removeVideoFromPlaylist: function (videoId, playlistItemId) {
+    addVideoBackToPlaylist: function(videoData) {
       try {
+        this.addVideo({
+          _id: this.playlistId,
+          videoData: videoData
+        });
+        // Update playlist's `lastUpdatedAt`
+        this.updatePlaylist({ _id: this.playlistId });
+        showToast('Video has been added back to playlist', 3000);
+      } catch (e) {
+        showToast('There was a problem with adding this video back to playlist');
+        console.error(e);
+      }
+    },
+
+    removeVideoFromPlaylist: function (videoId) {
+      try {
+
+        const videoData = this.playlistItems.find((i) => i.videoId === videoId);
+
         this.removeVideo({
           _id: this.playlistId,
           videoId: videoId,
-          playlistItemId: playlistItemId,
+          playlistItemId: videoData.playlistItemId,
         })
+
         // Update playlist's `lastUpdatedAt`
         this.updatePlaylist({ _id: this.playlistId })
-        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.Video has been removed'))
+        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.Video has been removed'), 3000, () => {
+          this.addVideoBackToPlaylist(videoData);
+        },
+        'Undo'
+      );
       } catch (e) {
         showToast(this.$t('User Playlists.SinglePlaylistView.Toast.There was a problem with removing this video'))
         console.error(e)
@@ -573,6 +596,7 @@ export default defineComponent({
       'updatePlaylist',
       'updateUserPlaylistSortOrder',
       'removeVideo',
+      'addVideo'
     ]),
 
     ...mapMutations([
