@@ -249,13 +249,12 @@ export function buildVTTFileLocally(storyboard, videoLengthSeconds) {
   return vttString
 }
 
-export function showToast(message, time = null, action = null, btnName = null) {
+export function showToast(message, time = null, action = null) {
   FtToastEvents.dispatchEvent(new CustomEvent('toast-open', {
     detail: {
       message,
       time,
       action,
-      btnName,
     }
   }))
 }

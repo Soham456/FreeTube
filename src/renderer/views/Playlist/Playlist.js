@@ -542,37 +542,35 @@ export default defineComponent({
           _id: this.playlistId,
           videoData: videoData
         });
+
         // Update playlist's `lastUpdatedAt`
         this.updatePlaylist({ _id: this.playlistId });
-        showToast('Video has been added back to playlist', 3000);
+        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.Video has been added back to playlist'), 3000);
       } catch (e) {
-        showToast('There was a problem with adding this video back to playlist');
+        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.There was a problem with adding this video back to playlist'));
         console.error(e);
       }
     },
 
-    removeVideoFromPlaylist: function (videoId) {
+    removeVideoFromPlaylist: function (videoData) {
       try {
+		this.removeVideo({
+		  _id: this.playlistId,
+		  videoId: videoData.videoId,
+		  playlistItemId: videoData.playlistItemId,
+		})
 
-        const videoData = this.playlistItems.find((i) => i.videoId === videoId);
+		// Update playlist's `lastUpdatedAt`
+		this.updatePlaylist({ _id: this.playlistId })
+		showToast(this.$t('User Playlists.SinglePlaylistView.Toast["Video has been removed. Click here to undo."]'), 3000, () => {
+		  this.addVideoBackToPlaylist(videoData);
+		}
+	      );
+	      } catch (e) {
+		showToast(this.$t('User Playlists.SinglePlaylistView.Toast.There was a problem with removing this video'))
+		console.error(e)
+	      }
 
-        this.removeVideo({
-          _id: this.playlistId,
-          videoId: videoId,
-          playlistItemId: videoData.playlistItemId,
-        })
-
-        // Update playlist's `lastUpdatedAt`
-        this.updatePlaylist({ _id: this.playlistId })
-        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.Video has been removed'), 3000, () => {
-          this.addVideoBackToPlaylist(videoData);
-        },
-        'Undo'
-      );
-      } catch (e) {
-        showToast(this.$t('User Playlists.SinglePlaylistView.Toast.There was a problem with removing this video'))
-        console.error(e)
-      }
     },
 
     updatePageTitle() {

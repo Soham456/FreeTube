@@ -7,18 +7,13 @@
       :class="{ closed: !toast.isOpen, open: toast.isOpen }"
       tabindex="0"
       role="status"
+      @click="performAction(toast.id)"
+      @keydown.enter.prevent="performAction(toast.id)"
+      @keydown.space.prevent="performAction(toast.id)"
     >
       <p class="message">
         {{ toast.message }}
       </p>
-      <!-- Action Button (display only if there is an action) -->
-      <button
-        v-if="toast.btnName"
-        class="action-button"
-        @click.prevent="performAction(toast.id)"
-      >
-        {{ toast.btnName }}
-      </button>
     </div>
   </div>
 </template>
